@@ -1,0 +1,16 @@
+ssh username@headnode.beocat.ksu.edu
+
+
+open mpi 
+
+srun 
+
+or ./ to run program 
+
+cant use gcc to run open mpi 
+
+module load OpenMPI/2.1.1-GCC-7.2.0-2.29
+
+
+run muiltple processes mpirun -np 12 a.out 
+

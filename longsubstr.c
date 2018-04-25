@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <pthread.h>
 
 #define BUF_SIZE 10*1024*1024
 #define LINE_COUNT_MAX 10000
