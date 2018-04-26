@@ -11,6 +11,25 @@
 #define BUF_SIZE 10*1024*1024
 #define LINE_COUNT_MAX 10000
 
+#define THREADS_COUNT 2
+
+ctypedef struct {
+	int rank;
+	char ** line_ptrs;	
+} wthread_args;
+
+void * worker_fn(void *args) {
+wthread_args * wargs;
+int i;
+char * longest_substr;
+
+wargs = (wthread_args *)args;
+
+	for (i = wargs->rank-1; wargs->line_ptrs[i] != NULL && wargs->line_ptrs[i+1] != NULL;  i += THREADS_COUNT) {
+		int longest_length = find_longest_substr(wargs->line_ptrs[i], wargs->line_ptrs[i+1], &longest_substr);
+		printf("[Thread rank %d]<%d. and <%d> : <%.*s>\n", wargs->rank, i, i+1, longest_length, longest_substr);
+	}
+}
 unsigned match_count (char *str1, char *str2) 
 {
 unsigned i;
@@ -75,7 +94,15 @@ char *longest_substr;
         line_ptrs[i] = next_line;
         //printf("line %d: <%s>\n", i, next_line);
     }
-    
+	
+for (i = 1; i <= THREADS_COUNT; i++) {
+	wargs[i].rank = i;
+	wargs[i].line_ptrs = line_ptrs;
+
+	if (pthread_create(&worker_thread[i], NULL, worker_fn, &wargs[i])){
+		perrror("create failed\n");
+	}
+}    
     for(int i = 0; line_ptrs[i] != NULL && line_ptrs[i+1] != NULL; i++) {
         //printf("line %d: <%s>\n", i, line_ptrs[i]);
         int longest_length = find_longest_substr(line_ptrs[i], line_ptrs[i+1], &longest_substr);
