@@ -65,6 +65,7 @@ void * worker_fn(void *args) {
 
 void scan_file(char *filename)
 {
+    printf("heeee");
     int fd;
     char *buf;
     char **line_ptrs;
@@ -74,7 +75,7 @@ void scan_file(char *filename)
     char *longest_substr;
     wthread_args * wargs;
     pthread_t worker_thread[THREADS_COUNT];
-
+    printf("poo-1");
     buf = (char *)malloc(BUF_SIZE);
     line_ptrs = (char **)malloc(LINE_COUNT_MAX);
     memset(buf, 0, BUF_SIZE);
@@ -83,17 +84,18 @@ void scan_file(char *filename)
     if(fd == -1) {
         perror("Could not open file!");
     }
+    printf("poo-2");
     read(fd, buf, BUF_SIZE);
     
     first_line = strtok_r(buf, "\n", &next); line_ptrs[0] = first_line;
     //printf("line 0: <%s>\n", first_line);
-    
+    printf("poo");
     for(int i = 1; next_line != NULL; i++ ) {
         next_line = strtok_r(NULL, "\n", &next);
         line_ptrs[i] = next_line;
         //printf("line %d: <%s>\n", i, next_line);
     }
-	
+	printf("poo2");
     for (int i = 1; i <= THREADS_COUNT; i++) {
 	   wargs[i].rank = i;
 	   wargs[i].line_ptrs = line_ptrs;
@@ -102,7 +104,7 @@ void scan_file(char *filename)
 		perror("create failed\n");
 	   }
     }    
-
+    printf("poo3");
     for (int i = 1; i <= THREADS_COUNT; i++) {
         pthread_join(worker_thread[i], NULL);
     }
@@ -123,7 +125,7 @@ void scan_file(char *filename)
 
 int main(int argc, char *argv[])
 {
-
+    printf("lfsaj;lkjdfa");
   if (argc < 2) {
       printf("Usage: longsubstr filename\n");
   }
