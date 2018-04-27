@@ -13,6 +13,19 @@
 
 #define THREADS_COUNT 2
 
+unsigned match_count (char *str1, char *str2) {
+
+    unsigned i;
+
+    for( i=0; str1[i] != 0 && str2[i] !=0; i++) {
+        if(str1[i] != str2[i]) {
+            return i;
+        }
+    }
+        
+    return i;
+}
+
 unsigned find_longest_substr(char *str1, char *str2, char ** write_to) {
     unsigned cnt;
     unsigned longest_length = 0;
@@ -49,19 +62,6 @@ void * worker_fn(void *args) {
 		printf("[Thread rank %d]<%d. and <%d> : <%.*s>\n", wargs->rank, i, i+1, longest_length, longest_substr);
 	}
 }
-unsigned match_count (char *str1, char *str2) {
-
-    unsigned i;
-
-    for( i=0; str1[i] != 0 && str2[i] !=0; i++) {
-        if(str1[i] != str2[i]) {
-            return i;
-        }
-    }
-        
-    return i;
-}
-
 
 void scan_file(char *filename)
 {
