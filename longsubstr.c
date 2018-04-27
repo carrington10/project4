@@ -13,7 +13,7 @@
 
 #define THREADS_COUNT 2
 
-ctypedef struct {
+typedef struct {
 	int rank;
 	char ** line_ptrs;	
 } wthread_args;
@@ -95,23 +95,27 @@ char *longest_substr;
         //printf("line %d: <%s>\n", i, next_line);
     }
 	
-for (i = 1; i <= THREADS_COUNT; i++) {
-	wargs[i].rank = i;
-	wargs[i].line_ptrs = line_ptrs;
+    for (i = 1; i <= THREADS_COUNT; i++) {
+	   wargs[i].rank = i;
+	   wargs[i].line_ptrs = line_ptrs;
 
-	if (pthread_create(&worker_thread[i], NULL, worker_fn, &wargs[i])){
+	   if (pthread_create(&worker_thread[i], NULL, worker_fn, &wargs[i])){
 		perrror("create failed\n");
-	}
-}    
-    for(int i = 0; line_ptrs[i] != NULL && line_ptrs[i+1] != NULL; i++) {
-        //printf("line %d: <%s>\n", i, line_ptrs[i]);
-        int longest_length = find_longest_substr(line_ptrs[i], line_ptrs[i+1], &longest_substr);
-        printf("<%d> and <%d> : <", i, i+1);
-        fflush(stdout);
-        write(STDOUT_FILENO, longest_substr, longest_length);
-        printf(">\n");
-        
+	   }
+    }    
+
+    for (i = 1; i <= THREADS_COUNT; i++) {
+        pthread_join(worker_thread[i], NULL);
     }
+    //for(int i = 0; line_ptrs[i] != NULL && line_ptrs[i+1] != NULL; i++) {
+        //printf("line %d: <%s>\n", i, line_ptrs[i]);
+        //int longest_length = find_longest_substr(line_ptrs[i], line_ptrs[i+1], &longest_substr);
+        //printf("<%d> and <%d> : <", i, i+1);
+        //fflush(stdout);
+        //write(STDOUT_FILENO, longest_substr, longest_length);
+        //printf(">\n");
+        
+    //}
     
     free(buf);
     free(line_ptrs);
