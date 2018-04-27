@@ -95,7 +95,7 @@ char *longest_substr;
         //printf("line %d: <%s>\n", i, next_line);
     }
 	
-    for (i = 1; i <= THREADS_COUNT; i++) {
+    for (int i = 1; i <= THREADS_COUNT; i++) {
 	   wargs[i].rank = i;
 	   wargs[i].line_ptrs = line_ptrs;
 
