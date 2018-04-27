@@ -85,8 +85,7 @@ void scan_file(char *filename)
     }
     read(fd, buf, BUF_SIZE);
     
-    first_line = strtok_r(buf, "\n", &next);
- shutdown_pow   line_ptrs[0] = first_line;
+    first_line = strtok_r(buf, "\n", &next); line_ptrs[0] = first_line;
     //printf("line 0: <%s>\n", first_line);
     
     for(int i = 1; next_line != NULL; i++ ) {
