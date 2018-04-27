@@ -19,20 +19,20 @@ typedef struct {
 } wthread_args;
 
 void * worker_fn(void *args) {
-wthread_args * wargs;
-int i;
-char * longest_substr;
+    wthread_args * wargs;
+    int i;
+    char * longest_substr;
 
-wargs = (wthread_args *)args;
+    wargs = (wthread_args *)args;
 
 	for (i = wargs->rank-1; wargs->line_ptrs[i] != NULL && wargs->line_ptrs[i+1] != NULL;  i += THREADS_COUNT) {
 		int longest_length = find_longest_substr(wargs->line_ptrs[i], wargs->line_ptrs[i+1], &longest_substr);
 		printf("[Thread rank %d]<%d. and <%d> : <%.*s>\n", wargs->rank, i, i+1, longest_length, longest_substr);
 	}
 }
-unsigned match_count (char *str1, char *str2) 
-{
-unsigned i;
+unsigned match_count (char *str1, char *str2) {
+
+    unsigned i;
 
     for( i=0; str1[i] != 0 && str2[i] !=0; i++) {
         if(str1[i] != str2[i]) {
@@ -44,11 +44,10 @@ unsigned i;
 }
 
 
-unsigned find_longest_substr(char *str1, char *str2, char ** write_to)
-{
-unsigned cnt;
-unsigned longest_length = 0;
-char *ptr1 = str1;
+unsigned find_longest_substr(char *str1, char *str2, char ** write_to) {
+    unsigned cnt;
+    unsigned longest_length = 0;
+    char *ptr1 = str1;
     
     for(; *str2; str1 = ptr1, str2++ ) {
         for(; *str1; str1++ )
