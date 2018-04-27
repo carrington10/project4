@@ -73,6 +73,7 @@ void scan_file(char *filename)
     char *next;
     char *longest_substr;
     wthread_args * wargs;
+    pthread_t worker_thread[THREADS_COUNT];
 
     buf = (char *)malloc(BUF_SIZE);
     line_ptrs = (char **)malloc(LINE_COUNT_MAX);
