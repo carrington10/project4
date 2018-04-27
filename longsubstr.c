@@ -65,13 +65,14 @@ void * worker_fn(void *args) {
 
 void scan_file(char *filename)
 {
-int fd;
-char *buf;
-char **line_ptrs;
-char *first_line;
-char *next_line;
-char *next;
-char *longest_substr;
+    int fd;
+    char *buf;
+    char **line_ptrs;
+    char *first_line;
+    char *next_line;
+    char *next;
+    char *longest_substr;
+    wthread_args * wargs;
 
     buf = (char *)malloc(BUF_SIZE);
     line_ptrs = (char **)malloc(LINE_COUNT_MAX);
