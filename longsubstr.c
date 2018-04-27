@@ -104,7 +104,7 @@ void scan_file(char *filename)
 	   }
     }    
 
-    for (i = 1; i <= THREADS_COUNT; i++) {
+    for (int i = 1; i <= THREADS_COUNT; i++) {
         pthread_join(worker_thread[i], NULL);
     }
     //for(int i = 0; line_ptrs[i] != NULL && line_ptrs[i+1] != NULL; i++) {
