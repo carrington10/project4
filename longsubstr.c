@@ -100,7 +100,7 @@ void scan_file(char *filename)
 	   wargs[i].line_ptrs = line_ptrs;
 
 	   if (pthread_create(&worker_thread[i], NULL, worker_fn, &wargs[i])){
-		perrror("create failed\n");
+		perror("create failed\n");
 	   }
     }    
 
