@@ -90,14 +90,16 @@ void scan_file(char *filename)
     first_line = strtok_r(buf, "\n", &next); line_ptrs[0] = first_line;
     //printf("line 0: <%s>\n", first_line);
     printf("poo");
-    for(int i = 1; next_line != NULL; i++ ) {
+    int i = 0;
+
+    for(i = 1; next_line != NULL; i++ ) {
         next_line = strtok_r(NULL, "\n", &next);
         line_ptrs[i] = next_line;
         //printf("line %d: <%s>\n", i, next_line);
     }
 	printf("poo2");
     wargs = (wthread_args *)malloc(THREADS_COUNT * sizeof(wthread_args));
-    for (int i = 0; i < THREADS_COUNT; i++) {
+    for (i = 0; i < THREADS_COUNT; i++) {
 	   wargs[i].rank = i+1;
 	   wargs[i].line_ptrs = line_ptrs;
 
@@ -106,7 +108,7 @@ void scan_file(char *filename)
 	   }
     }    
     printf("poo3");
-    for (int i = 0; i < THREADS_COUNT; i++) {
+    for (i = 0; i < THREADS_COUNT; i++) {
         pthread_join(worker_thread[i], NULL);
     }
     //for(int i = 0; line_ptrs[i] != NULL && line_ptrs[i+1] != NULL; i++) {
