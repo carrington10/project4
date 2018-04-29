@@ -56,8 +56,9 @@ void * worker_fn(void *args) {
     char * longest_substr;
 
     wargs = (wthread_args *)args;
-
+    printf("Thread rank <%d>\n", wargs->rank);
 	for (i = wargs->rank-1; wargs->line_ptrs[i] != NULL && wargs->line_ptrs[i+1] != NULL;  i += THREADS_COUNT) {
+		//printf("inside for loop");
 		int longest_length = find_longest_substr(wargs->line_ptrs[i], wargs->line_ptrs[i+1], &longest_substr);
 		printf("[Thread rank %d]<%d. and <%d> : <%.*s>\n", wargs->rank, i, i+1, longest_length, longest_substr);
 	}
@@ -77,7 +78,7 @@ void scan_file(char *filename)
     pthread_t worker_thread[THREADS_COUNT];
     printf("poo-1");
     buf = (char *)malloc(BUF_SIZE);
-    line_ptrs = (char **)malloc(LINE_COUNT_MAX);
+    line_ptrs = (char **)malloc((LINE_COUNT_MAX+1)*sizeof(char *));
     memset(buf, 0, BUF_SIZE);
     // printf("Filename is <%s>\n", filename);
     fd = open(filename, O_RDONLY);
@@ -86,7 +87,6 @@ void scan_file(char *filename)
     }
     printf("poo-2");
     read(fd, buf, BUF_SIZE);
-    
     first_line = strtok_r(buf, "\n", &next); line_ptrs[0] = first_line;
     //printf("line 0: <%s>\n", first_line);
     printf("poo");
@@ -96,8 +96,9 @@ void scan_file(char *filename)
         //printf("line %d: <%s>\n", i, next_line);
     }
 	printf("poo2");
-    for (int i = 1; i <= THREADS_COUNT; i++) {
-	   wargs[i].rank = i;
+    wargs = (wthread_args *)malloc(THREADS_COUNT * sizeof(wthread_args));
+    for (int i = 0; i < THREADS_COUNT; i++) {
+	   wargs[i].rank = i+1;
 	   wargs[i].line_ptrs = line_ptrs;
 
 	   if (pthread_create(&worker_thread[i], NULL, worker_fn, &wargs[i])){
@@ -105,7 +106,7 @@ void scan_file(char *filename)
 	   }
     }    
     printf("poo3");
-    for (int i = 1; i <= THREADS_COUNT; i++) {
+    for (int i = 0; i < THREADS_COUNT; i++) {
         pthread_join(worker_thread[i], NULL);
     }
     //for(int i = 0; line_ptrs[i] != NULL && line_ptrs[i+1] != NULL; i++) {
@@ -125,7 +126,6 @@ void scan_file(char *filename)
 
 int main(int argc, char *argv[])
 {
-    printf("lfsaj;lkjdfa");
   if (argc < 2) {
       printf("Usage: longsubstr filename\n");
   }
